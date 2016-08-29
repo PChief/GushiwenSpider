@@ -79,5 +79,27 @@ Spiders
 
         .../
     
+ # 保存结果示例
+
+十二个朝代
+
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%8D%81%E4%BA%8C%E6%9C%9D%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84.png)
+
+宋朝截图01
+
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%AE%8B%E6%9C%9D%E6%88%AA%E5%9B%BE01.png)
     
+ 
+   
+宋朝截图02-曾巩
+
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%AE%8B%E6%9C%9D%E6%88%AA%E5%9B%BE02-%E6%9B%BE%E5%B7%A9.png)
+
+金朝元好问01
+
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E9%87%91%E6%9C%9D%E5%85%83%E5%A5%BD%E9%97%AE01.png)
+
+金朝元好问02
+
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E9%87%91%E6%9C%9D%E5%85%83%E5%A5%BD%E9%97%AE02.png)  
     
