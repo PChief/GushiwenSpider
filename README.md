@@ -2,8 +2,9 @@
 gushiwen
 ========
 
-本scrapy项目用于爬取古诗文网（gushiwen.org）
-仅用于学习交流使用
+本scrapy项目用于爬取古诗文网（gushiwen.org），以scrapy框架为基础爬取提取数据，通过MySQL作为临时数据存储，最终保存在本地TXT文件中。
+
+***仅用于学习交流使用***
 
 
 
