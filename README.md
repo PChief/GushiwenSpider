@@ -116,15 +116,11 @@ Spiders
 
 ![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E9%87%91%E6%9C%9D%E5%85%83%E5%A5%BD%E9%97%AE01.png)
 
-金朝元好问02
 
-![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E9%87%91%E6%9C%9D%E5%85%83%E5%A5%BD%E9%97%AE02.png)  
-  
-
-清朝-曹雪芹
+清代-曹雪芹
 
 ![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E6%B8%85%E4%BB%A3-%E6%9B%B9%E9%9B%AA%E8%8A%B9.png)
 
-清朝-纳兰性德
+清代-纳兰性德
 
 ![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E6%B8%85%E4%BB%A3-%E7%BA%B3%E5%85%B0%E5%AE%B9%E8%8B%A5.png)
