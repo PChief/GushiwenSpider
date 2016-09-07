@@ -66,7 +66,7 @@ class AnalysGushiwen():
 
         # 初始化所有的字典，朝代为键值
         self.dic_dystany = {k: self.val for k in self.keyslist}
-        self.basepath = base_path
+        self.basepath = basepath
 
 
     def extractdata(self):
