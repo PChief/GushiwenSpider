@@ -9,6 +9,11 @@
 import re
 import os
 import pickle
+import codecs
+import numpy
+import pandas as pd
+import jieba
+from pandas import DataFrame,Series
 
 class AnalysGushiwen():
 
@@ -65,45 +70,48 @@ class AnalysGushiwen():
         )
 
         # 初始化所有的字典，朝代为键值
-        self.dic_dystany = {k: self.val for k in self.keyslist}
+        self.dic_dystany = {k: self.val.copy() for k in self.keyslist}
         self.basepath = basepath
 
 
     def extractdata(self):
-        base_dir = u'dir'
+        # base_dir = u'I:\Stu\Python\Scrapy105\gushiwen\文件输出\全量'  # 优盘
+        # base_dir = u'F:\Github\输出文件\古诗文\统计'   # PC
         for dystany in self.keyslist:
         # for dystany in [u'金朝', u'先秦']:  #以金朝为测试目标
+
             # 各朝代内容（正文、翻译、作者介绍）汇总
-            con_pty_mrg = self.dic_dystany[dystany]['content_poetry_merge']
-            con_fy_mrg = self.dic_dystany[dystany]['content_fanyi_merge']
-            con_ath_intr_mrg = self.dic_dystany[dystany]['content_author_intro_merge']
-            author_list = os.listdir(os.path.join(base_dir, dystany))  # [u'元好问', u'刘迎', u'赵秉文']
+            con_pty_mrg = ''  # self.dic_dystany[dystany]['content_poetry_merge']
+            con_fy_mrg = ''  # self.dic_dystany[dystany]['content_fanyi_merge']
+            con_ath_intr_mrg = ''  # self.dic_dystany[dystany]['content_author_intro_merge']
+            author_list = os.listdir(os.path.join(self.basepath, dystany))  # [u'元好问', u'刘迎', u'赵秉文']
             self.dic_dystany[dystany]['account_poetry']['author_all'] = len(author_list)
             self.dic_dystany[dystany]['account_poetry']['author_list'] = author_list
             self.dic_dystany[dystany]['account_poetry']['poetry_list'] = []
             dystany_poetry_list = self.dic_dystany[dystany]['account_poetry']['poetry_list']
+            # 各朝评分数据汇总
+            # dystany_score_populate = self.dic_dystany[dystany]['account_score']['score_populate']
             for author in author_list:
                 # 各作者内容（正文、翻译、作者介绍）汇总
-                self.dic_dystany[dystany]['content_poetry_single'][author] = ''
-                con_pty_sgl = self.dic_dystany[dystany]['content_poetry_single'][author]
-                self.dic_dystany[dystany]['content_fanyi_single'][author] = ''
-                con_fy_sgl = self.dic_dystany[dystany]['content_fanyi_single'][author]
+
+                con_pty_sgl = ''  # self.dic_dystany[dystany]['content_poetry_single'][author]
+                con_fy_sgl = ''  # self.dic_dystany[dystany]['content_fanyi_single'][author]
 
                 # 单个作者作品数量统计
-                self.dic_dystany[dystany]['account_poetry']['author_single'][author] = 0
-                acnt_pty_ath_sgl = self.dic_dystany[dystany]['account_poetry']['author_single'][author]
+                # self.dic_dystany[dystany]['account_poetry']['author_single'][author]
+                acnt_pty_ath_sgl = 0
 
                 # 评分内容统计：  作者评分汇总 ， 作品评分汇总
-                self.dic_dystany[dystany]['account_score']['score_single_author'][author] = {}
-                scr_sgl_ath = self.dic_dystany[dystany]['account_score']['score_single_author'][author]
-                scr_sgl_ath['score_max'] = 10.0
-                scr_sgl_ath['score_min'] = 0.0
-                scr_sgl_ath['score_populate'] = 0  #  总评分人数
-                scr_sgl_ath['score_total'] = 0           # 各作品评分累加
-                scr_sgl_ath['score_average'] = 0         # 总分除以作品数
+                # self.dic_dystany[dystany]['account_score']['score_single_author'][author]
+                scr_sgl_ath = {}
+                # scr_sgl_ath['score_max'] = 10.0
+                # scr_sgl_ath['score_min'] = 0.0
+                # scr_sgl_ath['score_populate'] = 0  #  总评分人数
+                # scr_sgl_ath['score_total'] = 0           # 各作品评分累加
+                # scr_sgl_ath['score_average'] = 0         # 总分除以作品数
 
                 # 获取作者目录下的所有文件，识别作者介绍与作品
-                cur_path = os.path.join(base_dir, dystany, author)
+                cur_path = os.path.join(self.basepath, dystany, author)
                 txt_list = os.listdir(cur_path)
                 ath_intr_file_name_list = [fn for fn in txt_list if u'简介' in fn]
                 # 判断有无作者，有作者的才会统计作者相关
@@ -156,6 +164,15 @@ class AnalysGushiwen():
                         # 各作者名下单作品评分
                         poetry_name = ptr.replace(u'.txt', '')
                         scr_sgl_ath[poetry_name] = dict(score=float(score), score_populate=int(score_populate))
+                self.dic_dystany[dystany]['content_poetry_single'][author] = con_pty_sgl
+                self.dic_dystany[dystany]['content_fanyi_single'][author] = con_fy_sgl
+                self.dic_dystany[dystany]['account_poetry']['author_single'][author] = acnt_pty_ath_sgl
+                self.dic_dystany[dystany]['account_score']['score_single_author'][author] = scr_sgl_ath
+
+            self.dic_dystany[dystany]['content_poetry_merge'] = con_pty_mrg
+            self.dic_dystany[dystany]['content_fanyi_merge'] = con_fy_mrg
+            self.dic_dystany[dystany]['content_author_intro_merge'] = con_ath_intr_mrg
+
 
     @staticmethod
     def extract_content(content):
@@ -167,7 +184,9 @@ class AnalysGushiwen():
         rm_con1 = u'本页内容整理自网络（或由匿名网友上传），原作者已无法考证，版权归原作者所有。'
         rm_con2 = u'本站免费发布仅供学习参考，其观点不代表本站立场。站务邮箱：service@gushiwen.org'
         rm_con3 = u'作者：佚名'  # 翻译和赏析的作者基本都是佚名
-        content = content.replace(rm_con1, '').replace(rm_con2, '').replace(rm_con3, '')
+        rm_con_list = [rm_con1, rm_con2, rm_con3, ur'\r', ur'\r\n', ur'\n', u' ']
+        for rm_con in rm_con_list:
+            content = content.replace(rm_con, '')
 
         if u'译文及注释' in content:
             if u'评分人数不足' in content:
@@ -225,10 +244,31 @@ class AnalysGushiwen():
 
 
 if __name__ == '__main__':
-    base_path = u'dir'
-    Analys = AnalysGushiwen(base_path)
-    Analys.extractdata()
-    stop_words = [u'译文', u'注释', u'赏析', u'创作背景', u'参考资料']
-    analysedic = open('analyse.pkl', 'wb')
-    pickle.dump(Analys.dic_dystany, analysedic)
-    analysedic.close()
+
+    #由本地文件中提取出所有数据，存储在本地pickle文件analyse.pkl中
+    # base_path = u'dir'
+    # Analys = AnalysGushiwen(base_path)
+    # Analys.extractdata()
+    # stop_words = [u'译文', u'注释', u'赏析', u'创作背景', u'参考资料']
+    # analysedic = open('analyse.pkl', 'wb')
+    # pickle.dump(Analys.dic_dystany, analysedic)
+    # analysedic.close()
+    pkl_file = open('analyse.pkl', 'rb')
+    D_dystany = pickle.load(pkl_file)
+    pkl_file.close()
+
+    stp_file = codecs.open('gswstopwords.txt', 'r', 'utf8')
+    stop_words = stp_file.read()
+    stp_file.close()
+    stop_words = stop_words.split('\n')
+    stop_words = stop_words + [u'\r', u'\r\n', u'(', u' ', u'\n', u'"', u'【', u'】', u'...']
+    stop_words = Series(stop_words)
+
+    # dy_fanyi_list = [D_dystany[dy]['content_fanyi_merge'] for dy in D_dystany.keys()]
+    dy_fanyi_list = [D_dystany[u'唐代']['content_fanyi_merge'], D_dystany[u'宋代']['content_fanyi_merge'],]
+    for fy_content in dy_fanyi_list:
+        fy_cont_seg = jieba.lcut(fy_content)
+        fy_cont_seg_df = DataFrame({'segment':fy_cont_seg})
+        fy_cont_seg_df = fy_cont_seg_df[~fy_cont_seg_df.segment.isin(stop_words)]
+        segStat = fy_cont_seg_df.groupby(by=['segment'])['segment'].agg({'count':numpy.size}).reset_index().sort(columns=['count'], ascending=False)
+        print segStat.head(20)
