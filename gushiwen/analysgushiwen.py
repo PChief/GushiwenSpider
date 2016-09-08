@@ -276,7 +276,7 @@ class AnalysGushiwen():
                 fy_content = fy_content[1000:]
                 ls = ls + thul.cut(con.encode('utf8'))
             if fy_content: ls = ls + thul.cut(fy_content.encode('utf8'))
-            fy_cont_seg = ls
+            fy_cont_seg = [val for val in ls if len(val) >1]  # 剔除所有单字符
             print type(fy_cont_seg), len(fy_cont_seg)
             fy_cont_seg = [val.decode('utf8') for val in fy_cont_seg]
             fy_cont_seg_df = DataFrame({'segment': fy_cont_seg})
