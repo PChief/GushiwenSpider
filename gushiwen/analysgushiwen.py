@@ -12,8 +12,8 @@ import pickle
 import codecs
 import numpy
 import pandas as pd
-import jieba
-from pandas import DataFrame,Series
+import thulac
+from pandas import DataFrame,Series,ExcelWriter
 
 class AnalysGushiwen():
 
@@ -181,10 +181,14 @@ class AnalysGushiwen():
         1、 剔除的文本内容
         2、正文部分提取， 需考虑译文是否存在。评分是否存在
         """
-        rm_con1 = u'本页内容整理自网络（或由匿名网友上传），原作者已无法考证，版权归原作者所有。'
-        rm_con2 = u'本站免费发布仅供学习参考，其观点不代表本站立场。站务邮箱：service@gushiwen.org'
-        rm_con3 = u'作者：佚名'  # 翻译和赏析的作者基本都是佚名
-        rm_con_list = [rm_con1, rm_con2, rm_con3, ur'\r', ur'\r\n', ur'\n', u' ']
+        rm_con1 = u'本页内容整理自网络（或由匿名网友上传）'
+        rm_con2 = u'原作者已无法考证'
+        rm_con3 = u'版权归原作者所有'
+        rm_con4 = u'本站免费发布仅供学习参考'
+        rm_con5 = u'，其观点不代表本站立场'
+        rm_con6 = u'。站务邮箱'
+        rm_con7 = u'service@gushiwen.org'
+        rm_con_list = [rm_con1, rm_con2, rm_con3, rm_con4, rm_con5, rm_con6, rm_con7]
         for rm_con in rm_con_list:
             content = content.replace(rm_con, '')
 
@@ -242,33 +246,60 @@ class AnalysGushiwen():
 
         return title, score, score_populate, yuanwen, yuanwen_link, fanyi
 
+    def analysedata(self):
+        # 从上面生成的pickle文件中读取字典里的数据
+        pkl_file = open('analyse.pkl', 'rb')
+        D_dystany = pickle.load(pkl_file)
+        pkl_file.close()
+
+        # 处理stop words
+        stp_file = codecs.open('gswstpwrds.txt', 'r', 'utf8')
+        stop_words = stp_file.read()
+        stp_file.close()
+        stop_words = stop_words.split('\n')
+        stop_words = stop_words + [u'\r', u'\r\n', u'(', u' ', u'\n', u'"', u'【', u'】', u'...', u'\r\r',
+                                   u'so.gushiwen.org', u'佚名\r',]
+        stop_words = Series(stop_words)
+
+        #dy_fanyi_list = [D_dystany[dy]['content_fanyi_merge'] for dy in D_dystany.keys()]
+        # 先秦、唐代、宋代、清代、元代占了全部内容的五分之四，故暂时只考虑这五个朝代
+        dy_list = [u'先秦', u'唐代', u'宋代', u'元代', u'清代']
+
+        thul = thulac.thulac('-seg_only')
+        thul.run()
+
+        for dystany in dy_list:
+            fy_content = D_dystany[dystany]['content_fanyi_merge']
+            ls = []
+            while len(fy_content) > 10000:
+                con = fy_content[:10000]
+                fy_content = fy_content[1000:]
+                ls = ls + thul.cut(con.encode('utf8'))
+            if fy_content: ls = ls + thul.cut(fy_content.encode('utf8'))
+            fy_cont_seg = ls
+            print type(fy_cont_seg), len(fy_cont_seg)
+            fy_cont_seg = [val.decode('utf8') for val in fy_cont_seg]
+            fy_cont_seg_df = DataFrame({'segment': fy_cont_seg})
+            fy_cont_seg_df = fy_cont_seg_df[~fy_cont_seg_df.segment.isin(stop_words)]
+            segStat = fy_cont_seg_df.groupby(by=['segment'])['segment'].agg(
+                {'count': numpy.size}).reset_index().sort_values(by=['count'], ascending=False)
+            writer = ExcelWriter('gushiwen.xlsx')
+            segStat.to_excel(writer, dystany)
+            writer.save()
+
+
 
 if __name__ == '__main__':
 
-    #由本地文件中提取出所有数据，存储在本地pickle文件analyse.pkl中
-    # base_path = u'dir'
-    # Analys = AnalysGushiwen(base_path)
+    #由本地文件中提取出所有数据，存储在本地pickle文件analyse.pkl中供下一步分析使用
+    base_path = u'dir'
+    Analys = AnalysGushiwen(base_path)
+
+    # 导出数据
     # Analys.extractdata()
-    # stop_words = [u'译文', u'注释', u'赏析', u'创作背景', u'参考资料']
     # analysedic = open('analyse.pkl', 'wb')
     # pickle.dump(Analys.dic_dystany, analysedic)
     # analysedic.close()
-    pkl_file = open('analyse.pkl', 'rb')
-    D_dystany = pickle.load(pkl_file)
-    pkl_file.close()
 
-    stp_file = codecs.open('gswstopwords.txt', 'r', 'utf8')
-    stop_words = stp_file.read()
-    stp_file.close()
-    stop_words = stop_words.split('\n')
-    stop_words = stop_words + [u'\r', u'\r\n', u'(', u' ', u'\n', u'"', u'【', u'】', u'...']
-    stop_words = Series(stop_words)
-
-    # dy_fanyi_list = [D_dystany[dy]['content_fanyi_merge'] for dy in D_dystany.keys()]
-    dy_fanyi_list = [D_dystany[u'唐代']['content_fanyi_merge'], D_dystany[u'宋代']['content_fanyi_merge'],]
-    for fy_content in dy_fanyi_list:
-        fy_cont_seg = jieba.lcut(fy_content)
-        fy_cont_seg_df = DataFrame({'segment':fy_cont_seg})
-        fy_cont_seg_df = fy_cont_seg_df[~fy_cont_seg_df.segment.isin(stop_words)]
-        segStat = fy_cont_seg_df.groupby(by=['segment'])['segment'].agg({'count':numpy.size}).reset_index().sort(columns=['count'], ascending=False)
-        print segStat.head(20)
+    # 分析数据，结果保存在excel表格中
+    Analys.analysedata()
