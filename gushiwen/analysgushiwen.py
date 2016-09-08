@@ -284,7 +284,7 @@ class AnalysGushiwen():
             segStat = fy_cont_seg_df.groupby(by=['segment'])['segment'].agg(
                 {'count': numpy.size}).reset_index().sort_values(by=['count'], ascending=False)
             writer = ExcelWriter('gushiwen.xlsx')
-            segStat.to_excel(writer, dystany)
+            segStat.head(2000).to_excel(writer, dystany)
             writer.save()
 
 
