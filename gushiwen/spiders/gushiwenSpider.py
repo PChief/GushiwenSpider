@@ -9,7 +9,8 @@ from w3lib.html import remove_tags
 from scrapy.crawler import CrawlerProcess
 
 """
-爬取古诗文网（so.gushiwen.org），提取出文章内容、翻译、作者介绍保存到本地或者数据库
+爬取古诗文网（so.gushiwen.org），提取出文章内容、翻译、作者介绍先保存到数据库，再提取出来保存到本地。
+因为SCrapy调度机制的问题，访问链接不会按照给定的顺序，因此需要完全入库之后再按照顺序提取保存在本地。
 """
 
 
