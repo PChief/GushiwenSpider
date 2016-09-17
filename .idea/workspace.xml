@@ -2,11 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a9634b6b-a2d6-4c02-b24a-a4cd9ce34da7" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/GushiwenSpider.iml" afterPath="$PROJECT_DIR$/.idea/GushiwenSpider.iml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gushiwen/analysgushiwen.py" afterPath="$PROJECT_DIR$/gushiwen/analysgushiwen.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gushiwen/spiders/gushiwenSpider.py" afterPath="$PROJECT_DIR$/gushiwen/spiders/gushiwenSpider.py" />
     </list>
     <ignored path="GushiwenSpider.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -43,10 +39,10 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="analysgushiwen.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="analysgushiwen.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/gushiwen/analysgushiwen.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="656">
+            <state relative-caret-position="941">
               <caret line="318" column="26" selection-start-line="318" selection-start-column="26" selection-end-line="318" selection-end-column="26" />
               <folding>
                 <element signature="e#119#128#0" expanded="true" />
@@ -55,7 +51,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="gushiwenSpider.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="gushiwenSpider.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/gushiwen/spiders/gushiwenSpider.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-522">
@@ -70,6 +66,11 @@
     </leaf>
   </component>
   <component name="Git.Settings">
+    <option name="PREVIOUS_COMMIT_AUTHORS">
+      <list>
+        <option value="PChief" />
+      </list>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
@@ -451,6 +452,14 @@
       <option name="presentableId" value="Default" />
       <updated>1472975940374</updated>
     </task>
+    <task id="LOCAL-00001" summary="调整一些格式">
+      <created>1474097028020</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1474097028020</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -479,6 +488,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="调整一些格式" />
+    <option name="LAST_COMMIT_MESSAGE" value="调整一些格式" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -513,22 +526,22 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/gushiwen/analysgushiwen.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="941">
+          <caret line="318" column="26" selection-start-line="318" selection-start-column="26" selection-end-line="318" selection-end-column="26" />
+          <folding>
+            <element signature="e#119#128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/gushiwen/spiders/gushiwenSpider.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-522">
           <caret line="179" column="16" selection-start-line="179" selection-start-column="16" selection-end-line="179" selection-end-column="16" />
           <folding>
             <element signature="e#23#58#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/gushiwen/analysgushiwen.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="656">
-          <caret line="318" column="26" selection-start-line="318" selection-start-column="26" selection-end-line="318" selection-end-column="26" />
-          <folding>
-            <element signature="e#119#128#0" expanded="true" />
           </folding>
         </state>
       </provider>
