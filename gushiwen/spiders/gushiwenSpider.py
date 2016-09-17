@@ -51,7 +51,7 @@ class GushiwenSpider(CrawlSpider):
                   'http://so.gushiwen.org/type.aspx?p=1&c=清代',
                   ]
     allowed_urls = [
-                     'type\.aspx\?p\=[0-9]*&c=%e5%85%88%e7%a7%a6$',
+                    'type\.aspx\?p\=[0-9]*&c=%e5%85%88%e7%a7%a6$',
                     'type\.aspx\?p\=[0-9]*&c=%e4%b8%a4%e6%b1%89$',
                     'type\.aspx\?p\=[0-9]*&c=%e9%ad%8f%e6%99%8b$',
                     'type\.aspx\?p\=[0-9]*&c=%e5%8d%97%e5%8c%97%e6%9c%9d$',
@@ -90,7 +90,7 @@ class GushiwenSpider(CrawlSpider):
         poetry_link = response.url
         poetry_dynasty = response.css('div.shileft div.son2 p::text').extract()[0]
         # 每个parse_view一个dict_list，用于调整翻译的顺序
-        dict_list = {}
+        dict_list = dict()
         dict_list[response.url] = []
 
         # 区分有无作者
@@ -197,7 +197,8 @@ class GushiwenSpider(CrawlSpider):
         extract_content_text = self.remove_needless_sysmbols(text=extract_content_text)
         self.insert_mysql(url=response.url, cont=extract_content_text.encode('utf8'))
 
-    def remove_needless_sysmbols(self, text=''):
+    @staticmethod
+    def remove_needless_sysmbols(text=''):
         """
         删除多余的符号，默认删除多余的'\n'
         sysmbol参数为要删掉的符号
@@ -223,13 +224,14 @@ class GushiwenSpider(CrawlSpider):
         part_author_intro_list = response.css('div.son5').extract()
         self.parse_fanyi(son5_list=part_author_intro_list, file_poetry=file_author_intro)
 
-    def parse_next(self, response):
+    @staticmethod
+    def parse_next(response):
         # follow等于True，此行甚至可以pass
         print response.url
 
     def insert_mysql(self, url=None, cont=None):
         sqli = "insert into gushiwen values(%s,%s)"
-        self.cur.execute(sqli,(url,cont))
+        self.cur.execute(sqli, (url, cont))
 process = CrawlerProcess()
 process.crawl(GushiwenSpider)
 process.start()
