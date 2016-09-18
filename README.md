@@ -2,7 +2,7 @@
 GushiwenSpider
 ========
 
-本项目用于爬取古诗文网（gushiwen.org），以scrapy框架为基础爬取提取数据，通过MySQL存储临时数据，最终保存在本地TXT文件中。
+本项目用于爬取[古诗文网](http://www.gushiwen.org)，以scrapy开源框架为基础提取历朝历代诗词作品、作者介绍等内容，通过MySQL存储临时数据，最终保存在本地TXT文件中。
 
 爬取完毕后对数据进行了统计分析，详见[古诗文网词频简要分析](https://github.com/PChief/GushiwenSpider/blob/master/%E5%8F%A4%E8%AF%97%E6%96%87%E7%BD%91%E8%AF%8D%E9%A2%91%E7%AE%80%E8%A6%81%E5%88%86%E6%9E%90.md)
 
