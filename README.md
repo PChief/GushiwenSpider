@@ -1,8 +1,8 @@
 
-gushiwen
+GushiwenSpider
 ========
 
-本scrapy项目用于爬取古诗文网（gushiwen.org），以scrapy框架为基础爬取提取数据，通过MySQL作为临时数据存储，最终保存在本地TXT文件中。
+本项目用于爬取古诗文网（gushiwen.org），以scrapy框架为基础爬取提取数据，通过MySQL存储临时数据，最终保存在本地TXT文件中。
 
 ***仅用于学习交流使用***
 
@@ -59,7 +59,6 @@ Spiders
 	左丘明/
 	
 	      左丘明简介.txt
-	      左丘明头像.jpg
 	      曹刿论战.txt
 	      子鱼论战.txt
 	      .....
@@ -67,7 +66,6 @@ Spiders
 	屈原/
 	  
 	      屈原简介.txt
-	      屈原头像.jpg
 	      离骚.txt
 	      九歌.txt
 	      .....
@@ -98,7 +96,7 @@ Spiders
 ![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%94%90%E6%9C%9D-%E7%99%BD%E5%B1%85%E6%98%93.png)
 
 
-宋代词中女神-李清照
+宋代-词中女神李清照
 
 ![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%AE%8B%E4%BB%A3-%E8%AF%8D%E4%B8%AD%E5%A5%B3%E7%A5%9E%E6%9D%8E%E6%B8%85%E7%85%A7.png)
     
