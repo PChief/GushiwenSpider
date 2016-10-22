@@ -1,7 +1,7 @@
 # _*_ coding:utf8 _*_
 
 from scrapy_redis.spiders import RedisSpider
-from gushiwen.items import FanyiItem
+from GushiwenSpider.items import FanyiItem
 from scrapy.loader import ItemLoader
 from scrapy.crawler import CrawlerProcess
 
@@ -20,7 +20,7 @@ class FanyiSpider(RedisSpider):
     redis_key = 'fanyi:start_urls'
     custom_settings = {
         'ITEM_PIPELINES': {
-            'gushiwen.pipelines.ParseFanyiPipeline': 300,
+            'GushiwenSpider.pipelines.ParseFanyiPipeline': 300,
         },
     }
 
