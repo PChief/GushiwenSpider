@@ -3,7 +3,7 @@
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from scrapy.crawler import CrawlerProcess
-from gushiwen.items import GushiwenItem
+from GushiwenSpider.items import GushiwenItem
 from scrapy.loader import ItemLoader
 import defines
 
@@ -28,7 +28,7 @@ class GushiwenSpider(CrawlSpider):
 
     custom_settings = {
         "ITEM_PIPELINES": {
-            'gushiwen.pipelines.GushiwenPipeline': 300
+            'GushiwenSpider.pipelines.GushiwenPipeline': 300
         },
     }
 
