@@ -5,7 +5,7 @@ author URL通过redis避免重复，省去判断
 """
 
 from scrapy_redis.spiders import RedisSpider
-from gushiwen.items import AuthorItem
+from GushiwenSpider.items import AuthorItem
 from scrapy.loader import ItemLoader
 from scrapy.crawler import CrawlerProcess
 
@@ -21,7 +21,7 @@ class AuthorSpider(RedisSpider):
     custom_settings = {
         'DUPEFILTER_CLASS': "scrapy_redis.dupefilter.RFPDupeFilter",
         'ITEM_PIPELINES': {
-            'gushiwen.pipelines.ParseAuthorPipeline': 300,
+            'GushiwenSpider.pipelines.ParseAuthorPipeline': 300,
         },
     }
 
