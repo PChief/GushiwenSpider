@@ -23,9 +23,48 @@ Spiders
 =========
 
 
-    URL规则：
+   一共四只爬虫，采用分布式部署：
+   
+      爬虫执行顺序：
+          gushiwen --> view_spider --> author_spider --> fanyi_spider
+   
+  [gushiwen](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/gushiwen_spider.py)
+  
+     本程序为主程序，负责提取作品的URL (http://so.gushiwen.org/view_xxxx.apsx) ， 写入redis队列view:start_urls中，交给view_spider爬取处理。
+     
+     从链接中提取view编号(view_xxxx)，lpush到本地redis的view_num，在保存作品内容(执行save脚本)到本地的时候，从中读取view编号，再查询数据库提取相关内容。
+  
+  
+  [view_spider](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/view_spider.py)
+  
+     提取View页面主要内容：
+        作品名称、作者、朝代、作品正文、翻译链接(fanyi_123.aspx, shangxi_123.aspx)、作者介绍链接(author_123.aspx)。
+     链接写入本地redis队列fanyi:start_urls，供爬虫fanyi_spider爬取处理
+
+       
+  [author_spider](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/author_spider.py)
+  
+     处理作者介绍部分
+     作者简介与作品正文处理方式相同
+     作者生平事迹等与作品翻译处理方式相同
+       
+  [fanyi_spider](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/fanyi_spider.py)
+
+    从redis队列 fanyi:start_urls
+       获取链接：
+           http://so.gushiwen.org/shangxi_4323.aspx
+           http://so.gushiwen.org/fanyi_3024.aspx
+       提取翻译正文部分，存入数据库
+           fanyi_3024 content
+           shangxi_4323 content
+
+
+
+
+
+  URL规则：
     
-         so.gushiwen.org/tpye.aspx?p=1&t=写景&c=唐代
+    so.gushiwen.org/tpye.aspx?p=1&t=写景&c=唐代
          
     页码: p=1
     
@@ -37,11 +76,7 @@ Spiders
 
 
 
-
-
-
-
-保存文件目录结构：
+执行save脚本保存提取内容到本地，目录结构如下：
 =========
 
 先秦/
