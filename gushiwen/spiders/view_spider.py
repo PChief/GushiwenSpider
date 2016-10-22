@@ -10,12 +10,9 @@ class ViewSdier(RedisSpider):
     """
     提取View页面主要内容：
     作品名称、作者、朝代、作品正文、翻译链接(fanyi_123.aspx, shangxi_123.aspx)、作者介绍链接(author_123.aspx)。
-    链接部分提交到redis，供子爬虫爬取
-    按照要保存的内容顺序提供一个列表写入数据库，保证键、值独一无二便于索引
-    当从数据库读取的时候有规律可循
+    链接部分提交到redis，供爬虫fanyi_spider爬取
     """
     name = 'view_spider'
-    # 后期通过参数控制朝代
     redis_key = 'view:start_urls'
     custom_settings = {
         'ITEM_PIPELINES': {
