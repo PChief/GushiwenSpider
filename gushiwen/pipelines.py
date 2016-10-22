@@ -122,6 +122,7 @@ class ParseViewPipeline(object):
             pass
 
 
+
 class ParseFanyiPipeline(object):
     """
     只处理翻译部分，获取翻译URL，存入数据库
