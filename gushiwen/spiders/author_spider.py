@@ -1,9 +1,5 @@
 # _*_ coding:utf8 _*_
 
-"""
-author URL通过redis避免重复，省去判断
-"""
-
 from scrapy_redis.spiders import RedisSpider
 from GushiwenSpider.items import AuthorItem
 from scrapy.loader import ItemLoader
