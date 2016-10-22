@@ -2,7 +2,7 @@
 
 from scrapy_redis.spiders import RedisSpider
 from scrapy.loader import ItemLoader
-from gushiwen.items import ViewItem
+from GushiwenSpider.items import ViewItem
 from scrapy.crawler import CrawlerProcess
 
 
@@ -19,7 +19,7 @@ class ViewSdier(RedisSpider):
     redis_key = 'view:start_urls'
     custom_settings = {
         'ITEM_PIPELINES': {
-            'gushiwen.pipelines.ParseViewPipeline': 300,
+            'GushiwenSpider.pipelines.ParseViewPipeline': 300,
         },
     }
 
