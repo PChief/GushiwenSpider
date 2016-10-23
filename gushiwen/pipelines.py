@@ -95,6 +95,7 @@ class ParseViewPipeline(object):
             div_son5 = item['div_son5']  # list
             if shileft_son2_sel.css('p a'):
                 # 处理有作者的情况
+                # 没有作者介绍的都当作没有作者，归为佚名
                 author_name = shileft_son2_sel.css('a::text').extract()[0]
                 author_intro_link = shileft_son2_sel.css('a::attr(href)').extract()[0]  # /author_600.aspx
                 author_num = re.match('/(.*?).aspx', author_intro_link).groups()[0]
@@ -111,7 +112,10 @@ class ParseViewPipeline(object):
                     pass
             else:
                 # 没有作者又分两种情况，一种是佚名，另一种是“孟子及其弟子”,都没有作者介绍
-                author_name = shileft_son2_sel.xpath('p[2]/text()').extract()[0]
+                try:
+                    author_name = shileft_son2_sel.xpath('p[2]/text()').extract()[0]
+                except IndexError:
+                    author_name = u'佚名'
                 poetry_fanyi_list = lpush_fanyi_url(div_son5)
 
             fanyi_list = ','.join(poetry_fanyi_list)
@@ -120,7 +124,6 @@ class ParseViewPipeline(object):
             cur.execute(sqli, (author_name.encode('utf8'), fanyi_list.encode('utf8'), view_num.encode('utf8')))
         except KeyError:
             pass
-
 
 
 class ParseFanyiPipeline(object):
