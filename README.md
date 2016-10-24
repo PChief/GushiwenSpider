@@ -149,3 +149,19 @@ Spiders
 **清代-纳兰性德**
 
 ![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E6%B8%85%E4%BB%A3-%E7%BA%B3%E5%85%B0%E5%AE%B9%E8%8B%A5.png)
+
+
+# 数据库查询结果示例
+
+唐代作品评分排名前三十且评分人数超过一千人：
+
+![image]()
+
+宋代作品评分排名前三十且评分人数超过一千人：
+
+![image]()
+
+唐代和宋代作品评分排名前三十且评分人数超过一千人：
+
+![image]()
+
