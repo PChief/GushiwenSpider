@@ -36,7 +36,7 @@ Spiders
      
      view编号(view_xxxx)，lpush到本地redis的view_num，在保存作品内容(执行save脚本)到本地的时候，从中读取view编号，再查询数据库提取相关内容。
      author链接(http://so.gushiwen.org/author_xxxx.apsx)，lpush到本地redis的author:start_urls,供author_spider爬取处理。
-     authorn编号(author_xxx),同上，lpush到本地redis的author_num，在保存作品内容(执行save脚本)到本地的时候，从中读取author编号，再查询数据库提取相关内容。 
+     author编号(author_xxx),同上，lpush到本地redis的author_num，在保存作品内容(执行save脚本)到本地的时候，从中读取author编号，再查询数据库提取相关内容。 
      fanyi链接(fanyi_xxx)，lpush到本地redis的fanyi:start_urls。在保存作品内容(执行save脚本)到本地的时候，首先从表bview中读取fanyi_list,该fanyi_list为fanyi_num以逗号(',')相隔，再依据fanyi_numc从表fanyi中读取content，再保存到本地。 
        
   [author_spider](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/author_spider.py)
@@ -62,11 +62,8 @@ Spiders
   URL规则：
     
     so.gushiwen.org/tpye.aspx?p=1&t=写景&c=唐代
-         
     页码: p=1
-    
     类别：t=写景
-    
     朝代: c=唐代
 
 
