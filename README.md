@@ -32,15 +32,12 @@ Spiders
   
      本程序为主程序，负责提取作品的URL (http://so.gushiwen.org/view_xxxx.apsx) ， 写入redis队列view:start_urls中，交给view_spider爬取处理。
      
-     从链接中提取view编号(view_xxxx)，lpush到本地redis的view_num，在保存作品内容(执行save脚本)到本地的时候，从中读取view编号，再查询数据库提取相关内容。
-  
-  
-  [view_spider](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/view_spider.py)
-  
-     提取View页面主要内容：
-        作品名称、作者、朝代、作品正文、翻译链接(fanyi_123.aspx, shangxi_123.aspx)、作者介绍链接(author_123.aspx)。
-     链接写入本地redis队列fanyi:start_urls，供爬虫fanyi_spider爬取处理
-
+     从作品URL中提取：
+     
+        view编号(view_xxxx)，lpush到本地redis的view_num，在保存作品内容(执行save脚本)到本地的时候，从中读取view编号，再查询数据库提取相关内容。
+	author链接(http://so.gushiwen.org/author_xxxx.apsx)，lpush到本地redis的author:start_urls,供author_spider爬取处理。
+	authorn编号(author_xxx),同上，lpush到本地redis的author_num，在保存作品内容(执行save脚本)到本地的时候，从中读取author编号，再查询数据库提取相关内容。 
+	fanyi链接(fanyi_xxx)，lpush到本地redis的fanyi:start_urls。在保存作品内容(执行save脚本)到本地的时候，首先从表bview中读取fanyi_list,该fanyi_list为fanyi_num以逗号(',')相隔，再依据fanyi_numc从表fanyi中读取content，再保存到本地。 
        
   [author_spider](https://github.com/PChief/GushiwenSpider/blob/master/gushiwen/spiders/author_spider.py)
   
