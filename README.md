@@ -153,15 +153,17 @@ Spiders
 
 # 数据库查询结果示例
 
+
+
 唐代作品评分排名前三十且评分人数超过一千人：
 
-![image]()
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%94%90%E4%BB%A3%E8%AF%84%E5%88%86%E4%BA%BA%E6%95%B0%E8%B6%85%E8%BF%871000%E4%BA%BA%E8%AF%84%E5%88%86%E5%89%8D30.png)
 
 宋代作品评分排名前三十且评分人数超过一千人：
 
-![image]()
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%AE%8B%E4%BB%A3%E8%AF%84%E5%88%86%E4%BA%BA%E6%95%B0%E8%B6%85%E8%BF%871000%E4%BA%BA%E8%AF%84%E5%88%86%E5%89%8D30.png)
 
 唐代和宋代作品评分排名前三十且评分人数超过一千人：
 
-![image]()
+![image](https://github.com/PChief/GushiwenSpider/blob/master/imgs/%E5%94%90%E5%AE%8B%E8%AF%84%E5%88%86%E4%BA%BA%E6%95%B0%E8%B6%85%E8%BF%871000%E4%BA%BA%E8%AF%84%E5%88%86%E5%89%8D30.png)
 
