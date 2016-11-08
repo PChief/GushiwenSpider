@@ -1,7 +1,5 @@
 # _*_ coding:utf-8 _*_
 
-import scrapy
-
 
 """
 定义爬取古诗文网（gushiwen.org）的各数据项
@@ -13,6 +11,9 @@ import scrapy
     作品正文、作品背景、后世评价、作品影响、其他名作
 链接
 """
+
+
+import scrapy
 
 
 class GushiwenItem(scrapy.Item):
