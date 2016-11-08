@@ -15,7 +15,6 @@ class AuthorSpider(RedisSpider):
     name = 'author_spider'
     redis_key = 'author:start_urls'
     custom_settings = {
-        'DUPEFILTER_CLASS': "scrapy_redis.dupefilter.RFPDupeFilter",
         'ITEM_PIPELINES': {
             'GushiwenSpider.pipelines.ParseAuthorPipeline': 300,
         },
