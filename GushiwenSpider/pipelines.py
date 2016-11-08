@@ -13,7 +13,9 @@ import redis
 import re
 
 
-# 定义公用变量
+"""
+定义公用变量
+"""
 rooturl = 'http://so.gushiwen.org'
 # 数据库表结构见 数据库表结构.xlsx
 conn = MySQLdb.connect(
@@ -27,6 +29,65 @@ conn = MySQLdb.connect(
 cur = conn.cursor()
 # redis
 rds = redis.Redis(host='localhost', port=6379, db=0)
+
+
+"""
+定义公用方法
+"""
+
+# 文本处理方法
+def extract_poetry_mainbody(text):
+    """
+    调用w3lib.html.remove_tags()处理正文
+    部分作品的文本内容放在了p标签外面，div.son2内，通过<br>分隔
+    <br>标签不是完整标签，在remove_tags()函数中会被去掉，无法通过keep保留
+    先remove其他标签（div，a，span，p...） 再用'\n'替换<br>
+    """
+    mainbody_text = remove_tags(text=text, which_ones=('div', 'a', 'span', 'p'))
+    mainbody_text = mainbody_text.replace(' ', '').replace('\n', '', 16).replace('<br>', '\n')
+    # mainbody_text = remove_needless_sysmbols(mainbody_text)
+    return mainbody_text
+
+def remove_needless_sysmbols(text):
+    # 删除多余的符号
+    text = text.replace('\r\n', '\r')
+    for sysmbol in ['\r', '\n']:
+        double_sysmbols = sysmbol * 2
+        while double_sysmbols in text:
+            text = text.replace(double_sysmbols, sysmbol)
+        return text
+
+def lpush_fanyi_url(div_son5):
+    """
+    从div_son5原始数据中提取出翻译、赏析链接(/fanyi_123.aspx)
+    送入redis队列
+    """
+    poetry_fanyi_list = []
+    for p_a_href in div_son5:
+        p_a_href_selector = Selector(text=p_a_href)
+        a_href = p_a_href_selector.xpath('//p[1]/a/@href').extract()[0]
+        fanyi_url = rooturl + a_href
+        poetry_fanyi_list.append(fanyi_url)
+        rds.lpush('fanyi:start_urls', fanyi_url)
+    return poetry_fanyi_list
+
+def insert_mysql(self, table=None, key=None, value=None):
+    sqli = "insert into (%s) values(%s,%s)"
+    cur.execute(sqli, (table, key, value))
+
+def extract_grade(pingfen):
+
+    # 评分人数不足的以0分和0人处理
+    if u'评分人数不足' in pingfen:
+        grade = 0
+        grade_popus = 0
+    else:
+        pingfen_raw = remove_tags(pingfen).split()
+        grade_popus = int(pingfen_raw[0][1:-4])  # 31397
+        grade = float(pingfen_raw[1])  # 8.5
+
+    return grade, grade_popus
+
 
 class GushiwenPipeline(object):
     """
@@ -188,63 +249,3 @@ class ParseAuthorPipeline(object):
             cur.execute(sqli, values)
         except KeyError:
             pass
-
-
-
-"""
-定义公用方法
-"""
-
-# 文本处理方法
-def extract_poetry_mainbody(text):
-    """
-    调用w3lib.html.remove_tags()处理正文
-    部分作品的文本内容放在了p标签外面，div.son2内，通过<br>分隔
-    <br>标签不是完整标签，在remove_tags()函数中会被去掉，无法通过keep保留
-    先remove其他标签（div，a，span，p...） 再用'\n'替换<br>
-    """
-    mainbody_text = remove_tags(text=text, which_ones=('div', 'a', 'span', 'p'))
-    mainbody_text = mainbody_text.replace(' ', '').replace('\n', '', 16).replace('<br>', '\n')
-    # mainbody_text = remove_needless_sysmbols(mainbody_text)
-    return mainbody_text
-
-def remove_needless_sysmbols(text):
-    # 删除多余的符号
-    text = text.replace('\r\n', '\r')
-    for sysmbol in ['\r', '\n']:
-        double_sysmbols = sysmbol * 2
-        while double_sysmbols in text:
-            text = text.replace(double_sysmbols, sysmbol)
-        return text
-
-def lpush_fanyi_url(div_son5):
-    """
-    从div_son5原始数据中提取出翻译、赏析链接(/fanyi_123.aspx)
-    送入redis队列
-    """
-    poetry_fanyi_list = []
-    for p_a_href in div_son5:
-        p_a_href_selector = Selector(text=p_a_href)
-        a_href = p_a_href_selector.xpath('//p[1]/a/@href').extract()[0]
-        fanyi_url = rooturl + a_href
-        poetry_fanyi_list.append(fanyi_url)
-        rds.lpush('fanyi:start_urls', fanyi_url)
-    return poetry_fanyi_list
-
-def insert_mysql(self, table=None, key=None, value=None):
-    sqli = "insert into (%s) values(%s,%s)"
-    cur.execute(sqli, (table, key, value))
-
-def extract_grade(pingfen):
-
-    # 评分人数不足的以0分和0人处理
-    if u'评分人数不足' in pingfen:
-        grade = 0
-        grade_popus = 0
-    else:
-        pingfen_raw = remove_tags(pingfen).split()
-        grade_popus = int(pingfen_raw[0][1:-4])  # 31397
-        grade = float(pingfen_raw[1])  # 8.5
-
-    return grade, grade_popus
-
